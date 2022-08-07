@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head th:replace="common/fragments::head"></head>
+<div th:replace="common/fragments::header"></div>
+<body>
+<div class="container content">
+    <form action="/newPost" method="POST" th:object="${newPost}">
+        <div class="form-group">
+            <label for="postTitle">Название поста</label>
+            <input th:field="*{title}" type="text" class="form-control" id="postTitle" placeholder="Название">
+        </div>
+
+        <div class="form-group">
+            <label for="postText">Текст поста</label>
+            <textarea th:field="*{text}" class="form-control" id="postText" maxlength="1000" placeholder="Максимальное кол-во символов - 1000"></textarea>
+        </div>
+        <button type="submit" class="btn btn-primary mt-3">Создать</button>
+    </form>
+</div>
+</body>
+<script th:replace="common/fragments::bottomScript"></script>
+</html>

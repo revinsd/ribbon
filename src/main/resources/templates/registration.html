@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head th:replace="common/fragments::head"></head>
+<body>
+<div class="card bg-glass">
+    <div class="card-body px-4 py-5 px-md-5">
+        <div th:if="${registrationError}" class="alert alert-warning alert-dismissible fade show" role="alert">
+            <strong th:text="${registrationError}"></strong>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+        <form th:object="${newUser}" class="needs-validation"  method="POST" action="/registration">
+            <div class="form-outline mb-4">
+                <input th:field="*{username}" type="text" id="username" minlength="5" class="form-control">
+                <label class="form-label" for="username" style="margin-left: 0px;">Логин</label>
+                <div class="form-notch">
+                    <div class="form-notch-leading" style="width: 9px;"></div>
+                    <div class="form-notch-middle" style="width: 88.8px;"></div>
+                    <div class="form-notch-trailing"></div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6 mb-4">
+                    <div class="form-outline">
+                        <input th:field="*{password}" type="password" id="password" minlength="8" class="form-control">
+                        <label class="form-label" for="password" style="margin-left: 0px;">Пароль</label>
+                        <div class="form-notch">
+                            <div class="form-notch-leading" style="width: 9px;"></div>
+                            <div class="form-notch-middle" style="width: 68.8px;"></div>
+                            <div class="form-notch-trailing"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 mb-4">
+                    <div class="form-outline">
+                        <input th:field="*{passwordConfirmation}" type="password" id="passwordConfirmation" class="form-control" minlength="8">
+                        <label class="form-label" for="passwordConfirmation" style="margin-left: 0px;">Подтверждение пароля</label>
+                        <div class="form-notch">
+                            <div class="form-notch-leading" style="width: 9px;"></div>
+                            <div class="form-notch-middle" style="width: 68px;"></div>
+                            <div class="form-notch-trailing"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <button type="submit" class="btn btn-primary btn-block mb-4">Зарегистрироваться</button>
+        </form>
+    </div>
+</div>
+</body>
+<script th:replace="common/fragments::bottomScript"></script>
+</html>

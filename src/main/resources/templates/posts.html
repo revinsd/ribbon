@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:sec="http://www.w3.org/1999/xhtml">
+<head th:replace="common/fragments::head"></head>
+<div th:replace="common/fragments::header"></div>
+<body>
+<div class="container content">
+    <div th:each="post:${posts}" class="col mb-2">
+        <div class="card shadow-sm">
+            <div class="card-body">
+                <span class="fw-bold" th:text="${post.title}"></span>
+                <p class="card-text" th:text="${post.text}"></p>
+                <div class="d-flex justify-content-between align-items-center">
+                    <div class="d-flex justify-content-right align-items-right">
+                        <div class="btn-group">
+                            <input class="post-id" th:value="${post.id}" hidden>
+                            <button th:classappend="${post.isLikedByCurrentUser}?'rated-plus':''" type="button" class="btn btn-sm btn-outline-secondary rating-btn">+</button>
+                            <span th:text="${post.rating}" class="btn btn-sm btn-outline-secondary rating-count-btn">1</span>
+                            <button th:classappend="${post.isDislikedByCurrentUser}?'rated-minus':''" type="button" class="btn btn-sm btn-outline-secondary rating-btn">-</button>
+                        </div>
+                    </div>
+                    <div>
+                        <a th:href="'/user/'+${post.author.username}"><small class="text-muted" th:text="${post.author.username}"></small></a>
+                        <button th:id="${post.id}" type="submit" sec:authorize="hasAuthority('ADMIN') or hasAuthority('MODERATOR')" class="btn btn-warning">Удалить пост</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+<script th:replace="common/fragments::bottomScript"></script>
+<script src="/js/postAction.js"></script>
+</html>

@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:sec="http://www.w3.org/1999/xhtml">
+<head th:replace="common/fragments::head"></head>
+<body class="profile-body">
+<section class="h-100">
+    <div class="container py-5 h-100">
+        <div class="row d-flex justify-content-center align-items-center h-100">
+            <div class="col col-lg-9 col-xl-7">
+                <div class="card">
+                    <div class="rounded-top text-white d-flex flex-row" style="background-color: #000; height:200px;">
+                        <div class="ms-3 mt-3 d-flex flex-column" style="width: 168px;">
+                            <div>
+                                <a type="button" onclick="history.back()" class="btn btn-outline-light" data-mdb-ripple-color="dark" style="z-index: 1;">Назад</a>
+                            </div>
+                            <img th:src="${user==null||user.photoFileName==null}?'/staticImg/No-photo.png':'/img/'+${user.photoFileName}"
+                                 alt="Generic placeholder image" class="img-fluid img-thumbnail mt-4 mb-2 profile-image"
+                                 style="z-index: 1">
+                        </div>
+                        <div class="ms-3" style="margin-top: 130px;">
+                            <h2 th:text="${user.username}"></h2>
+                        </div>
+                    </div>
+                    <div class="p-4 text-black" style="background-color: #f8f9fa;">
+                        <div class="d-flex justify-content-end text-center py-1">
+                            <div>
+                                <p class="mb-1 h5" th:text="${rating}"></p>
+                                <p class="small text-muted mb-0">Рейтинг</p>
+                            </div>
+                            <div class="px-3">
+                                <p class="mb-1 h5" th:text="${userPostsCount}"></p>
+                                <p class="small text-muted mb-0">Посты</p>
+                            </div>
+                            <div>
+                                <p th:text="${followersCount}" class="mb-1 h5"></p>
+                                <p class="small text-muted mb-0">Подписчики</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-body p-4 text-black">
+                        <div th:if="${posts!=null}" th:each="post:${posts}" class="col mb-2">
+                            <div class="card shadow-sm">
+                                <div class="card-body">
+                                    <span class="fw-bold" th:text="${post.title}"></span>
+                                    <p class="card-text" th:text="${post.text}"></p>
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <div class="d-flex justify-content-right align-items-right">
+                                            <div class="btn-group">
+<!--                                                <input id="user" hidden type="text" th:value="${user.id}">-->
+                                                <input class="post-id" th:value="${post.id}" hidden>
+                                                <button th:classappend="${post.isLikedByCurrentUser}?'rated-plus':''" type="button" class="btn btn-sm btn-outline-secondary rating-btn">+</button>
+                                                <span th:text="${post.rating}" class="btn btn-sm btn-outline-secondary rating-count-btn">1</span>
+                                                <button th:classappend="${post.isDislikedByCurrentUser}?'rated-minus':''" type="button" class="btn btn-sm btn-outline-secondary rating-btn">-</button>
+                                            </div>
+                                        </div>
+                                        <button th:id="${post.id}" type="button" sec:authorize="hasAuthority('ADMIN') or hasAuthority('MODERATOR')" class="btn btn-warning">Удалить пост</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div th:if="${posts==null}" class="d-flex justify-content-center align-items-center">
+                            <h6 class="lead fw-normal mb-0">Нет постов</h6>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+</body>
+<script th:replace="common/fragments::bottomScript"></script>
+<script src="/js/postAction.js"></script>
+</html>

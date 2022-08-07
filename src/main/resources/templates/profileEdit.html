@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head th:replace="common/fragments::head"></head>
+<body class="profile-body">
+<section class="h-100">
+  <div class="container py-5 h-100">
+    <div class="row d-flex justify-content-center align-items-center h-100">
+      <div class="col col-lg-9 col-xl-7">
+        <div class="card">
+          <form action="/profile/edit" method="post" enctype="multipart/form-data">
+            <div class="rounded-top text-white d-flex flex-row" style="background-color: #000; height:200px;">
+              <div class="ms-3 mt-3 d-flex flex-column" style="width: 168px;">
+                <div>
+                  <a type="button" href="/profile" class="btn btn-outline-light" data-mdb-ripple-color="dark" style="z-index: 1;">Назад</a>
+                </div>
+                <div class="img-container">
+                  <img th:src="${user==null||user.photoFileName==null}?'/staticImg/No-photo.png':'/img/'+${user.photoFileName}"
+                       alt="Generic placeholder image" class="img-fluid img-thumbnail mt-4 mb-2 profile-image"
+                       style="z-index: 1" id="profile-image">
+                  <div class="overlay">
+                    <i id="icon" class="bi bi-image overlaying-icon"></i>
+                    <input name="photo" id="img-input" type="file" hidden>
+                  </div>
+                </div>
+                <button type="submit" class="btn btn-outline-dark" data-mdb-ripple-color="dark" style="z-index: 1;">Сохранить</button>
+              </div>
+              <div class="ms-3" style="margin-top: 130px;">
+                <h2 th:text="${user.username}"></h2>
+              </div>
+            </div>
+            <div class="p-4 text-black" style="background-color: #f8f9fa;">
+              <div class="d-flex justify-content-end text-center py-1">
+                <div>
+                  <p class="mb-1 h5" th:text="${rating}"></p>
+                  <p class="small text-muted mb-0">Рейтинг</p>
+                </div>
+                <div class="px-3">
+                  <p class="mb-1 h5" th:text="${userPostsCount}"></p>
+                  <p class="small text-muted mb-0">Посты</p>
+                </div>
+                <div>
+                  <p th:text="${followersCount}" class="mb-1 h5"></p>
+                  <p class="small text-muted mb-0">Подписчики</p>
+                </div>
+              </div>
+            </div>
+            <div class="card-body p-4 text-black">
+              <div class="mb-5">
+                <p class="lead fw-normal mb-1">Обо мне</p>
+                <div class="p-4" style="background-color: #f8f9fa;">
+                  <textarea class="form-control profile-text-area" name="about" th:text="${user.about}"></textarea>
+                </div>
+              </div>
+            </div>
+          </form>
+          <form action="/profile/changePassword" method="post" class="container needs-validation" th:object="${newUserParams}">
+            <div class="input-group mb-2">
+              <input class="form-control" type="password" th:field="*{password}" placeholder="Текущий пароль" minlength="8">
+            </div>
+            <div class="input-group mb-2">
+              <input class="form-control" type="password" th:field="*{newPassword}" placeholder="Новый пароль" minlength="8">
+            </div>
+            <div class="input-group mb-2">
+              <input class="form-control" type="password" th:field="*{passwordConfirmation}" placeholder="Повторите пароль" minlength="8">
+            </div>
+            <div class="input-group mb-2">
+              <button type="submit" class="btn btn-outline-dark">Изменить пароль</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<input type="hidden" id="toastActivator" th:if="${error} or ${success}" th:value="${error} or ${success}">
+<div th:if="${error} or ${success}" class="toast-container position-fixed bottom-0 end-0 p-3">
+  <div id="liveToast" class="toast"  role="alert" aria-live="assertive" aria-atomic="true">
+    <div class="toast-header">
+      <strong class="me-auto">Уведомление</strong>
+      <button id="toast-close" type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+    </div>
+    <div class="toast-body" th:if="${error}" th:text="${error}"></div>
+    <div class="toast-body" th:if="${success}" th:text="${success}"></div>
+  </div>
+</div>
+</body>
+<script>
+  var imgUploadButton = document.getElementById("icon");
+  var imgUploadInput = document.getElementById("img-input")
+  var profileImage = document.getElementById("profile-image");
+  imgUploadButton.addEventListener("click", function (){
+    imgUploadInput.click();
+  })
+
+  imgUploadInput.onchange=e=>{
+    if(imgUploadInput.files) {
+      profileImage.src = URL.createObjectURL(imgUploadInput.files[0]);
+    }
+  }
+</script>
+<script th:replace="common/fragments::bottomScript"></script>
+</html>
